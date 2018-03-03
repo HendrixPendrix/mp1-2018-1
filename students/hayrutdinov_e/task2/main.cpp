@@ -54,27 +54,20 @@ public:
 			arr[i] = 0;
 		}
 	}
-
-	//Know Size Array//
-	void SizeArray()
-	{
-		cout << "Size array:" << GetSize() << "\n";
-	}
-
 	//Set element by index//
 	void SetElem(int index, double elem)
 	{
-		arr[index - 1] = elem;
+		arr[index] = elem;
 	}
 
 	//Know element by index//
-	void KnowElem(int i)
+	double GetElem(int i)
 	{
-		cout << arr[i] << "\n";
+		return arr[i];
 	}
 
 	//Find Minimal Element in array//
-	void MinimalElem()
+	double MinimalElem()
 	{
 		double min = arr[0];
 		for (int i = 1; i < size; i++)
@@ -82,47 +75,40 @@ public:
 			if (arr[i] < min)
 				min = arr[i];
 		}
-		cout << min << "\n";
+		return min;
+	}
+	void PrintMinElem()
+	{
+		cout << "Minimal element of array:" << MinimalElem() << "\n";
 	}
 
 	//Validation of the array in order//
-	void CheckArray()
+	double CheckArray()
 	{
-		int tmp = 0;
+		bool tmp;
+		int t;
 		for (int i = 0; i < size - 1; i++)
 		{
 			if (arr[i] <= arr[i + 1])
-				tmp = 0;
+				tmp = true;
 			else
 			{
 				tmp = 1;
 				break;
 			}
 		}
-		if (tmp == 0)
-			cout << "Array is ordered\n";
-		else cout << "Array is disordered\n";
+		return tmp;
 	}
 
 	//Array with odd index//
-	void OddArray()
+	double OddArray(int j)
 	{
-		double *oddarr = new double[(size / 2) + 1];
+		double *oddarr = new double[(size / 2)];
 		float p = size / 2;
-		cout << "Subarray with odd index of the source:";
-		for (int i = 0; i < size; i++)
-			for (int j = 0; j < p - 1; j++)
-			{
-				if (i % 2 == 1)
-				{
-					oddarr[j] = arr[i];
-					cout << oddarr[j] << " ";
-				}
-
-			}
-		cout << "\n";
+		for (int i = 0; i < p; i++)
+			oddarr[i] = arr[2 * i + 1];
+		return oddarr[j];
 	}
-
 	//Destructor//
 	~DynamicArray()
 	{
@@ -132,11 +118,15 @@ public:
 
 void main()
 {
+	int index;
+	double min = 0;
 	int size = 1;
 	int r = 1;
 	int b;
+	bool tmp = 0;
 	double elem;
 	double *array = new double[size];
+
 	DynamicArray A;
 	while (r == 1)
 	{
@@ -156,7 +146,8 @@ void main()
 		}
 		case 2:
 		{
-			A.SizeArray();
+			A.GetSize();
+			cout << "Size array:" << size << "\n";
 			A.PrintArray();
 			system("pause");
 			system("cls");
@@ -165,10 +156,10 @@ void main()
 		case 3:
 		{
 			cout << "Set index:\n";
-			cin >> size;
+			cin >> index;
 			cout << "Set value:\n";
 			cin >> elem;
-			A.SetElem(size, elem);
+			A.SetElem(index, elem);
 			A.PrintArray();
 			system("pause");
 			system("cls");
@@ -177,8 +168,8 @@ void main()
 		case 4:
 		{
 			cout << "Set index:\n";
-			cin >> size;
-			A.KnowElem(size);
+			cin >> index;
+			cout << A.GetElem(index) << "\n";
 			A.PrintArray();
 			system("pause");
 			system("cls");
@@ -186,7 +177,7 @@ void main()
 		}
 		case 5:
 		{
-			A.MinimalElem();
+			A.PrintMinElem();
 			A.PrintArray();
 			system("pause");
 			system("cls");
@@ -195,6 +186,9 @@ void main()
 		case 6:
 		{
 			A.CheckArray();
+			if (tmp)
+				cout << "Array is ordered\n";
+			else cout << "Array is disordered\n";
 			A.PrintArray();
 			system("pause");
 			system("cls");
@@ -202,7 +196,10 @@ void main()
 		}
 		case 7:
 		{
-			A.OddArray();
+			float p = size / 2;
+			for (int i = 0; i < p; i++)
+				cout << A.OddArray(i) << " ";
+			cout << "\n";
 			A.PrintArray();
 			system("pause");
 			system("cls");
