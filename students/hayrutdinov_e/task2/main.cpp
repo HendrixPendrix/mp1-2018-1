@@ -113,7 +113,7 @@ public:
 		for (int i = 0; i < size; i++)
 			for (int j = 0; j < p - 1; j++)
 			{
-				if (i % 2 == 0)
+				if (i % 2 == 1)
 				{
 					oddarr[j] = arr[i];
 					cout << oddarr[j] << " ";
