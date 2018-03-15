@@ -85,7 +85,7 @@ public:
 	{
 		for (int i = 0; i < size; i++)
 			if (!strcmp(word, dict[i][0]))
-				return *dict[i][1];
+				return dict[i][1];
 	}
 	char CheckWord(char *word, bool tmp = 0)
 	{
@@ -99,13 +99,17 @@ public:
 		}
 		return tmp;
 	}
-	int GetCount(int count = 0)
+	int GetCount(int count = 1)
 	{
 		for (int i = 0; i < size - 1; i++)
 			for (int j = i + 1; j < size; j++)
 				if (!strcmp(dict[0][i], dict[0][j]));
 				else count++;
 				return count;
+	}
+	void PrintCount()
+	{
+		cout << GetCount() << endl;
 	}
 	char SaveInFile()
 	{
@@ -191,7 +195,7 @@ void main()
 		{
 			cout << "Enter the word whose translation you want see:";
 			cin >> word;
-			Tr.GetTranslate(word);
+			cout << Tr.GetTranslate(word) << endl;
 			Tr.PrintDict();
 			system("pause");
 			system("cls");
@@ -214,8 +218,7 @@ void main()
 		}
 		case 5:
 		{
-			Tr.GetCount(count);
-			cout << "Count words:" << count << endl;
+			Tr.PrintCount();
 			Tr.PrintDict();
 			system("pause");
 			system("cls");
