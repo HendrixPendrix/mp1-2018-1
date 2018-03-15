@@ -84,14 +84,14 @@ public:
 	char GetTranslate(char *word)
 	{
 		for (int i = 0; i < size; i++)
-			if (word == dict[i][0])
+			if (!strcmp(word, dict[i][0]))
 				return *dict[i][1];
 	}
 	char CheckWord(char *word, bool tmp = 0)
 	{
 		for (int i = 0; i < size; i++)
 		{
-			if (word == dict[0][i])
+			if (!strcmp(word, dict[0][i]))
 			{
 				tmp = 0;
 			}
@@ -99,13 +99,11 @@ public:
 		}
 		return tmp;
 	}
-	int GetCount()
+	int GetCount(int count = 0)
 	{
-
-		int count = 0;
 		for (int i = 0; i < size - 1; i++)
 			for (int j = i + 1; j < size; j++)
-				if (*dict[0][i] == *dict[0][j]);
+				if (!strcmp(dict[0][i], dict[0][j]));
 				else count++;
 				return count;
 	}
@@ -148,7 +146,7 @@ public:
 void main()
 {
 	bool tmp = 0;
-	int size, b = 1, r;
+	int count = 0, b = 1, r;
 	char word[100];
 	char eng[300];
 	char rus[300];
@@ -216,7 +214,8 @@ void main()
 		}
 		case 5:
 		{
-			Tr.GetCount();
+			Tr.GetCount(count);
+			cout << "Count words:" << count << endl;
 			Tr.PrintDict();
 			system("pause");
 			system("cls");
