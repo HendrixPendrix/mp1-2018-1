@@ -24,7 +24,10 @@ public:
 	~Translator()
 	{
 		for (int i = 0; i < size; i++)
+		{
 			delete[] dict[i];
+		}
+		delete[] dict;;
 	}
 	Translator& operator=(const Translator &dict2)
 	{
@@ -70,6 +73,10 @@ public:
 			_n[i] = new char*[2];
 			_n[i][0] = dict[i][0];
 			_n[i][1] = dict[i][1];
+		}
+		for (int i = 0; i < size; i++)
+		{
+			delete[] dict[i];
 		}
 		delete[] dict;
 
@@ -123,15 +130,16 @@ public:
 				return dict[i][1];
 		}
 	}
-	char CheckWord(char *word, bool tmp)
+	char CheckWord(char *word)
 	{
+		bool tmp = true;
 		for (int i = 0; i < size; i++)
 		{
 			if (!strcmp(word, dict[0][i]))
 			{
-				tmp = 1;
+				tmp = true;
 			}
-			else tmp = 0;
+			else tmp = false;
 			break;
 		}
 		return tmp;
@@ -242,7 +250,7 @@ void main()
 		{
 			cout << "Enter the word whose translation you want see:";
 			cin >> word;
-			if (Tr.CheckWord(word, tmp) == 1)
+			if (Tr.CheckWord(word) == true)
 			{
 				cout << "This word is already in dictionary" << endl;
 			}
