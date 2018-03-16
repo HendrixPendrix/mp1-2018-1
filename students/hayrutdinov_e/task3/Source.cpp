@@ -26,6 +26,40 @@ public:
 		for (int i = 0; i < size; i++)
 			delete[] dict[i];
 	}
+	Translator& operator=(const Translator &dict2)
+	{
+		if (this == &dict2)
+			return *this;
+		if (size != dict2.size)
+		{
+			delete[] dict;
+			size = dict2.size;
+			dict = new char**[2];
+			for (int i = 0; i < size; i++)
+			{
+				dict[i] = new char*[2];
+			}
+		}
+		for (int i = 0; i < size; i++)
+		{
+			strcpy(dict[i][0], dict2.dict[i][0]);
+			strcpy(dict[i][1], dict2.dict[i][1]);
+		}
+		size = dict2.size;
+		return *this;
+	}
+	Translator(const Translator &c)
+	{
+		size = c.size;
+		dict = new char**[2];
+		for (int i = 0; i < size; i++)
+		{
+			dict[i] = new char*[2];
+			dict[i] = c.dict[i];
+		}
+
+
+	}
 	void ResizeDict()
 	{
 		char ***_n;
@@ -81,21 +115,24 @@ public:
 		}
 		return false;
 	}
-	char GetTranslate(char *word)
+	char *GetTranslate(char *word)
 	{
 		for (int i = 0; i < size; i++)
+		{
 			if (!strcmp(word, dict[i][0]))
 				return dict[i][1];
+		}
 	}
-	char CheckWord(char *word, bool tmp = 0)
+	char CheckWord(char *word, bool tmp)
 	{
 		for (int i = 0; i < size; i++)
 		{
 			if (!strcmp(word, dict[0][i]))
 			{
-				tmp = 0;
+				tmp = 1;
 			}
-			else tmp = 1;
+			else tmp = 0;
+			break;
 		}
 		return tmp;
 	}
@@ -130,7 +167,7 @@ public:
 		char r[300];
 		ifstream dictionary;
 		dictionary.open("dictionary.txt");
-		dictionary.getline(r, 300, ' ');
+		dictionary.getline(r, 300, '\n');
 		size = atoi(r);
 		dict = new char**[size];
 		for (int i = 0; i < size; i++)
@@ -140,7 +177,7 @@ public:
 			dictionary.getline(t, 300, ' ');
 			dict[i][0] = new char[strlen(t) + 1];
 			strcpy(dict[i][0], t);
-			dictionary.getline(t, 300, ' ');
+			dictionary.getline(t, 300, '\n');
 			dict[i][1] = new char[strlen(t) + 1];
 			strcpy(dict[i][1], t);
 		}
@@ -149,7 +186,7 @@ public:
 };
 void main()
 {
-	bool tmp = 0;
+	bool tmp = 1;
 	int count = 0, b = 1, r;
 	char word[100];
 	char eng[300];
@@ -205,8 +242,7 @@ void main()
 		{
 			cout << "Enter the word whose translation you want see:";
 			cin >> word;
-			Tr.CheckWord(word, tmp);
-			if (tmp == 0)
+			if (Tr.CheckWord(word, tmp) == 1)
 			{
 				cout << "This word is already in dictionary" << endl;
 			}
@@ -234,6 +270,7 @@ void main()
 		case 7:
 		{
 			Tr.CheckFile();
+			Tr.PrintDict();
 			system("pause");
 			system("cls");
 			break;
