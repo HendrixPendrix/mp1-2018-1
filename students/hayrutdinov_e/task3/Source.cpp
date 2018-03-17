@@ -3,10 +3,7 @@
 #include <iostream> 
 #include <cstdlib> 
 #include <locale.h>
-
 using namespace std;
-
-
 class Translator
 {
 public:
@@ -20,14 +17,6 @@ public:
 		dict = new char**[2];
 		for (int i = 0; i < size; i++)
 			dict[i] = new char*[2];
-	}
-	~Translator()
-	{
-		for (int i = 0; i < size; i++)
-		{
-			delete[] dict[i];
-		}
-		delete[] dict;
 	}
 	Translator& operator=(const Translator &dict2)
 	{
@@ -64,8 +53,6 @@ public:
 			dict[i] = new char*[2];
 			dict[i] = c.dict[i];
 		}
-
-
 	}
 	void ResizeDict()
 	{
@@ -114,8 +101,6 @@ public:
 		strcpy(dict[size - 1][0], _eng);
 		strcpy(dict[size - 1][1], _rus);
 	}
-
-
 	bool ChangeTranslate(char *word, char *wordrus, char *rus)
 	{
 		for (int i = 0; i < size; i++)
@@ -138,8 +123,6 @@ public:
 				return dict[i][1];
 		}
 	}
-
-
 	bool CheckWord(char *word)
 	{
 		bool tmp = true;
@@ -149,11 +132,9 @@ public:
 			{
 				return true;
 			}
-		} 
+		}
 		return false;
 	}
-
-
 	int GetCount(int count = 1)
 	{
 		for (int i = 0; i < size - 1; i++)
@@ -164,7 +145,7 @@ public:
 	}
 	void PrintCount()
 	{
-		cout << GetCount() << endl;
+		cout << "Count words:" << GetCount() << endl;
 	}
 	char SaveInFile()
 	{
@@ -200,6 +181,13 @@ public:
 			strcpy(dict[i][1], t);
 		}
 		dictionary.close();
+	}	~Translator()
+	{
+		for (int i = 0; i < size; i++)
+		{
+			delete[] dict[i];
+		}
+		delete[] dict;
 	}
 };
 void main()
@@ -244,7 +232,6 @@ void main()
 			system("pause");
 			system("cls");
 			break;
-
 		}
 		case 3:
 		{
