@@ -27,7 +27,7 @@ public:
 		{
 			delete[] dict[i];
 		}
-		delete[] dict;;
+		delete[] dict;
 	}
 	Translator& operator=(const Translator &dict2)
 	{
@@ -35,6 +35,10 @@ public:
 			return *this;
 		if (size != dict2.size)
 		{
+			for (int i = 0; i < size; i++)
+			{
+				delete[] dict[i];
+			}
 			delete[] dict;
 			size = dict2.size;
 			dict = new char**[2];
@@ -90,6 +94,10 @@ public:
 			dict[i][0] = _n[i][0];
 			dict[i][1] = _n[i][1];
 		}
+		for (int i = 0; i < size; i++)
+		{
+			delete[] _n[i];
+		}
 		delete[] _n;
 		size++;
 	}
@@ -112,7 +120,7 @@ public:
 	{
 		for (int i = 0; i < size; i++)
 		{
-			if (!strcmp(word, dict[i][0]) && !strcmp(wordrus, dict[i][1]))
+			if ((strcmp(word, dict[i][0]) == 0) && (strcmp(wordrus, dict[i][1]) == 0))
 			{
 				delete dict[i][1];
 				dict[i][1] = new char[strlen(rus) + 1];
@@ -126,24 +134,26 @@ public:
 	{
 		for (int i = 0; i < size; i++)
 		{
-			if (!strcmp(word, dict[i][0]))
+			if (strcmp(word, dict[i][0]) == 0)
 				return dict[i][1];
 		}
 	}
-	char CheckWord(char *word)
+
+
+	bool CheckWord(char *word)
 	{
 		bool tmp = true;
 		for (int i = 0; i < size; i++)
 		{
-			if (!strcmp(word, dict[0][i]))
+			if (strcmp(word, dict[i][0]) == 0)
 			{
-				tmp = true;
+				return true;
 			}
-			else tmp = false;
-			break;
-		}
-		return tmp;
+		} 
+		return false;
 	}
+
+
 	int GetCount(int count = 1)
 	{
 		for (int i = 0; i < size - 1; i++)
@@ -250,7 +260,7 @@ void main()
 		{
 			cout << "Enter the word whose translation you want see:";
 			cin >> word;
-			if (Tr.CheckWord(word) == true)
+			if (Tr.CheckWord(word))
 			{
 				cout << "This word is already in dictionary" << endl;
 			}
