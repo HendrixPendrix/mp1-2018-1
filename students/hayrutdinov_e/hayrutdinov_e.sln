@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hayrutdinov_e", "hayrutdinov_e.vcxproj", "{7D998896-D781-45F4-BECC-C7E0EA6F9DAA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "task3", "task3\task3.vcxproj", "{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "task4", "task4\task4.vcxproj", "{B20E2455-2F48-40F7-9C6E-9FBC8D6D4271}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,18 +23,14 @@ Global
 		{7D998896-D781-45F4-BECC-C7E0EA6F9DAA}.Release|x64.Build.0 = Release|x64
 		{7D998896-D781-45F4-BECC-C7E0EA6F9DAA}.Release|x86.ActiveCfg = Release|Win32
 		{7D998896-D781-45F4-BECC-C7E0EA6F9DAA}.Release|x86.Build.0 = Release|Win32
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Debug|x64.ActiveCfg = Debug|x64
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Debug|x64.Build.0 = Debug|x64
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Debug|x64.Deploy.0 = Debug|x64
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Debug|x86.ActiveCfg = Debug|Win32
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Debug|x86.Build.0 = Debug|Win32
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Debug|x86.Deploy.0 = Debug|Win32
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Release|x64.ActiveCfg = Release|x64
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Release|x64.Build.0 = Release|x64
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Release|x64.Deploy.0 = Release|x64
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Release|x86.ActiveCfg = Release|Win32
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Release|x86.Build.0 = Release|Win32
-		{E1A0A4E0-E045-45DA-A6B9-CCBC26F6D051}.Release|x86.Deploy.0 = Release|Win32
+		{B20E2455-2F48-40F7-9C6E-9FBC8D6D4271}.Debug|x64.ActiveCfg = Debug|x64
+		{B20E2455-2F48-40F7-9C6E-9FBC8D6D4271}.Debug|x64.Build.0 = Debug|x64
+		{B20E2455-2F48-40F7-9C6E-9FBC8D6D4271}.Debug|x86.ActiveCfg = Debug|Win32
+		{B20E2455-2F48-40F7-9C6E-9FBC8D6D4271}.Debug|x86.Build.0 = Debug|Win32
+		{B20E2455-2F48-40F7-9C6E-9FBC8D6D4271}.Release|x64.ActiveCfg = Release|x64
+		{B20E2455-2F48-40F7-9C6E-9FBC8D6D4271}.Release|x64.Build.0 = Release|x64
+		{B20E2455-2F48-40F7-9C6E-9FBC8D6D4271}.Release|x86.ActiveCfg = Release|Win32
+		{B20E2455-2F48-40F7-9C6E-9FBC8D6D4271}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

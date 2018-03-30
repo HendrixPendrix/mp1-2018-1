@@ -44,6 +44,8 @@ public:
 		size = dict2.size;
 		return *this;
 	}
+
+
 	Translator(const Translator &c)
 	{
 		size = c.size;
