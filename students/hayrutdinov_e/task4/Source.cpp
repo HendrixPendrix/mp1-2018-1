@@ -30,26 +30,49 @@ public:
 		this->year = c.year;
 		return *this;
 	}
-
 };
+ostream &operator<<(ostream &os, const Film &film)
+{
+	os << "Name:" << film.name << endl;
+	os << "Date:" << film.day << '.' << film.month << '.' << film.year << endl;
+	os << "Producer:" << film.prod << endl;
+	os << "Screenwriter:" << film.scen << endl;
+	os << "Composer:" << film.comp << endl;
+	os << "Fees:" << film.cash << endl;
+	return os;
+}
 class FilmLibrary
 {
 public:
+	friend ostream &operator<<(ostream &os, const Film &film);
 	vector<Film> films;
-	void SortLib()
+	vector <Film> g;
+	vector <Film> fees;
+	vector <Film> SortLib()
 	{
-		string tmp;
+		Film tmp;
 		for (int i = 0; i < films.size() - 1; i++)
 			for (int j = 0; j < films.size() - i - 1; j++)
-
-				if (films[i].year <= films[j].year)
-					if (films[i].year == films[j].year)
-						if (films[i].name < films[j].name)
+				if (films[j].year >= films[j + 1].year)
+					if (films[j].year == films[j + 1].year)
+						if (films[j].name > films[j + 1].name)
 						{
-							tmp = films[i].name;
-
-
+							tmp = films[j];
+							films[j] = films[j + 1];
+							films[j + 1] = tmp;
 						}
+						else {}
+					else
+					{
+						tmp = films[j];
+						films[j] = films[j + 1];
+						films[j + 1] = tmp;
+					}
+		return films;
+	}
+	Film GetFilm(Film _film)
+	{
+		return _film;
 	}
 	//1 Method
 	void AddFilm(string _comp, string _prod, string _name, string _scen, int _cash, int _day, int _month, int _year)
@@ -97,18 +120,16 @@ public:
 	//3 Method
 	vector <Film> GetFilm(string _name, int _year)
 	{
-		vector <Film> f;
 		for (int j = 0; j < films.size(); j++)
 		{
 			if ((films[j].name == _name) && (films[j].year = _year))
-				f.push_back(films[j]);
+				g.push_back(films[j]);
 		}
-		return f;
+		return g;
 	}
 	//4 Method
 	vector <Film> GetFilmProd(string _prod)
 	{
-		vector <Film> g;
 		for (int j = 0; j < films.size(); j++)
 		{
 			if (films[j].prod == _prod)
@@ -119,11 +140,11 @@ public:
 	//5 Method
 	vector <Film> GetFilmYear(int _year)
 	{
-		vector <Film> h;
+		vector <Film> g;
 		for (int j = 0; j < films.size(); j++)
 			if (films[j].year == _year)
-				h.push_back(films[j]);
-		return h;
+				g.push_back(films[j]);
+		return g;
 	}
 	vector <Film> SortFees()
 	{
@@ -136,10 +157,10 @@ public:
 		for (int i = 0; i < films.size() - 1; i++)
 			for (int j = 0; j < films.size() - i - 1; j++)
 			{
-				if (fees[j].cash > fees[j].cash)
+				if (fees[j].cash > fees[j + 1].cash)
 				{
 					tmp = fees[j].cash;
-					fees[i].cash = fees[j + 1].cash;
+					fees[j].cash = fees[j + 1].cash;
 					fees[j + 1].cash = tmp;
 				}
 			}
@@ -148,7 +169,6 @@ public:
 	//6 Method
 	vector <Film> GetFilmsWithMaxFees(int count)
 	{
-		vector <Film> fees;
 		fees = SortFees();
 		while (fees.size() != count)
 			fees.pop_back();
@@ -157,15 +177,13 @@ public:
 	// 7 Method
 	vector <Film> GetFilmsWithMaxFeesInYear(int count, int _year)
 	{
-		vector <Film> feesinyear;
-		vector <Film> tmp;
-		feesinyear = SortFees();
-		for (int i = 0; i < feesinyear.size(); i++)
-			if (feesinyear[i].year = _year)
-				tmp[i] = feesinyear[i];
-		while (tmp.size() != count)
-			tmp.pop_back();
-		return tmp;
+		fees = SortFees();
+		for (int i = 0; i < fees.size(); i++)
+			if (fees[i].year = _year)
+				g[i] = fees[i];
+		while (g.size() != count)
+			g.pop_back();
+		return g;
 	}
 	//8 Method
 	int CountFilms()
@@ -178,7 +196,7 @@ public:
 		for (int i = 0; i < films.size(); i++)
 		{
 			if (films[i].year == _year && films[i].name == _name)
-				films.erase(films.begin + i);
+				films.erase(films.begin() + i);
 		}
 	}
 	//10 Method
@@ -196,49 +214,58 @@ public:
 			lib << "Screenwriter:" << films[i].scen << endl;
 			lib << "Composer:" << films[i].comp << endl;
 			lib << "Fees:" << films[i].cash << endl;
+			lib << endl;
 		}
-		lib.close;
+		lib.close();
 	}
 	//11 Method
-	void CheckFile()
+	void CheckFile(int _count)
 	{
 		ifstream lib;
+		Film f;
 		int size;
 		char t[300];
 		lib.open("FilmLibrary.txt");
 		lib.getline(t, 300, '\n');
 		size = atoi(t);
-		for (int i = 0; i < size; i++)
+		for (int i = _count; i < (_count + size); i++)
 		{
 			lib.getline(t, 100, '\n');
-			films[i].name = t;
+			f.name = t;
 			lib.getline(t, 100, '.');
-			films[i].day = atoi(t);
+			f.day = atoi(t);
 			lib.getline(t, 100, '.');
-			films[i].month = atoi(t);
+			f.month = atoi(t);
 			lib.getline(t, 100, '\n');
-			films[i].year = atoi(t);
+			f.year = atoi(t);
 			lib.getline(t, 100, '\n');
-			films[i].prod = t;
+			f.prod = t;
 			lib.getline(t, 100, '\n');
-			films[i].scen = t;
+			f.scen = t;
 			lib.getline(t, 100, '\n');
-			films[i].comp = t;
+			f.comp = t;
 			lib.getline(t, 100, '\n');
-			films[i].cash = atoi(t);
+			f.cash = atoi(t);
+			films.push_back(f);
 		}
 	}
-
+	void PrintVector()
+	{
+		for (int i = 0; i < films.size(); i++)
+		{
+			cout << films[i] << endl;
+		}
+	}
 };
 void main()
 {
 	FilmLibrary FL;
-	int tmp, tmp1;
+	int tmp, count = 0;
 	int t = 1;
 	int r;
 	char *b[100];
-	string name, prod, scen, comp;
-	int day, month, year, count;
+	string name, prod, scen, comp, _name;
+	int day, month, year;
 	unsigned long int fees;
 	setlocale(LC_ALL, "Rus");
 	while (t == 1)
@@ -254,30 +281,35 @@ void main()
 			<< "8 - Get count of films\n"
 			<< "9 - Remove film\n"
 			<< "10 - Save Library in file\n"
-			<< "11 - Check Library"
+			<< "11 - Check Library\n"
 			<< "12 - Exit" << endl;
 		cin >> r;
 		switch (r)
 		{
 		case 1:
 		{
+			system("chcp 1251");
 			cout << "Name:";
-			getline(cin, name);
+			getline(cin, name, '.');
 			cout << "Day:";
 			cin >> day;
 			cout << "Month:";
 			cin >> month;
-			cout << "Year";
+			cout << "Year:";
 			cin >> year;
 			cout << "Producer:";
-			getline(cin, prod);
-			cout << "Screenwriter";
-			getline(cin, scen);
-			cout << "Composer";
-			getline(cin, comp);
+			getline(cin, prod, '.');
+			cout << "Screenwriter:";
+			getline(cin, scen, '.');
+			cout << "Composer:";
+			getline(cin, comp, '.');
 			cout << "Box office:";
 			cin >> fees;
+			cout << endl;
 			FL.AddFilm(comp, prod, name, scen, fees, day, month, year);
+			FL.SortLib();
+			FL.PrintVector();
+			count++;
 			system("pause");
 			system("cls");
 			break;
@@ -287,18 +319,20 @@ void main()
 			cout << "Enter name film and year:";
 			cin >> name >> year;
 			cout << "Enter fact that want:"
-				<< "1 - Day"
-				<< "2 - Month"
-				<< "3 - Year"
-				<< "4 - Name"
-				<< "5 - Producer"
-				<< "6 - Screenwriter"
-				<< "7 - Composer"
+				<< "1 - Day\n"
+				<< "2 - Month\n"
+				<< "3 - Year\n"
+				<< "4 - Name\n"
+				<< "5 - Producer\n"
+				<< "6 - Screenwriter\n"
+				<< "7 - Composer\n"
 				<< "8 - Fees" << endl;
 			cin >> tmp;
 			cout << "Enter the fact that you are changing:";
 			cin >> r;
 			FL.ChangeInfo(tmp, name, year, *b);
+			FL.SortLib();
+			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
@@ -307,50 +341,55 @@ void main()
 		{
 			cout << "Enter name film and year:";
 			cin >> name >> year;
-			FL.GetFilm(name, year);
+			cout << FL.GetFilm(name, year);
 			system("pause");
 			system("cls");
 			break;
 		}
 		case 4:
 		{
-			cout << "Enter producer";
+			cout << "Enter producer:";
 			cin >> prod;
 			FL.GetFilmProd(prod);
+			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
 		}
 		case 5:
 		{
-			cout << "Enter year";
+			cout << "Enter year:";
 			cin >> year;
 			FL.GetFilmYear(year);
+			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
 		}
 		case 6:
 		{
-			cout << "Enter count films";
+			cout << "Enter count films:";
 			cin >> count;
 			FL.GetFilmsWithMaxFees(count);
+			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
 		}
 		case 7:
 		{
-			cout << "Enter count films and her year";
+			cout << "Enter count films and her year:";
 			cin >> count >> year;
 			FL.GetFilmsWithMaxFeesInYear(count, year);
+			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
 		}
 		case 8:
 		{
-			cout << "Count films:" << FL.CountFilms();
+			cout << "Count films:" << FL.CountFilms() << endl;;
+			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
@@ -360,6 +399,7 @@ void main()
 			cout << "Enter name and year film that you want remove:";
 			cin >> name >> year;
 			FL.DeleteFilm(year, name);
+			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
@@ -373,7 +413,8 @@ void main()
 		}
 		case 11:
 		{
-			FL.CheckFile();
+			FL.CheckFile(count);
+			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
@@ -384,3 +425,4 @@ void main()
 		}
 		}
 	}
+}
