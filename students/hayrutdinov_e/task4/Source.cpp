@@ -214,7 +214,6 @@ public:
 			lib << "Screenwriter:" << films[i].scen << endl;
 			lib << "Composer:" << films[i].comp << endl;
 			lib << "Fees:" << films[i].cash << endl;
-			lib << endl;
 		}
 		lib.close();
 	}
@@ -228,10 +227,12 @@ public:
 		lib.open("FilmLibrary.txt");
 		lib.getline(t, 300, '\n');
 		size = atoi(t);
-		for (int i = _count; i < (_count + size); i++)
+		for (int i = 0; i < size; i++)
 		{
 			lib.getline(t, 100, '\n');
+			lib.getline(t, 100, '\n');
 			f.name = t;
+			lib.getline(t, 100, ':');
 			lib.getline(t, 100, '.');
 			f.day = atoi(t);
 			lib.getline(t, 100, '.');
@@ -239,15 +240,20 @@ public:
 			lib.getline(t, 100, '\n');
 			f.year = atoi(t);
 			lib.getline(t, 100, '\n');
+			lib.getline(t, 100, '\n');
 			f.prod = t;
+			lib.getline(t, 100, '\n');
 			lib.getline(t, 100, '\n');
 			f.scen = t;
 			lib.getline(t, 100, '\n');
+			lib.getline(t, 100, '\n');
 			f.comp = t;
+			lib.getline(t, 100, ':');
 			lib.getline(t, 100, '\n');
 			f.cash = atoi(t);
 			films.push_back(f);
 		}
+
 	}
 	void PrintVector()
 	{
@@ -308,6 +314,7 @@ void main()
 			cout << endl;
 			FL.AddFilm(comp, prod, name, scen, fees, day, month, year);
 			FL.SortLib();
+			system("cls");
 			FL.PrintVector();
 			count++;
 			system("pause");
@@ -341,7 +348,7 @@ void main()
 		{
 			cout << "Enter name film and year:";
 			cin >> name >> year;
-			cout << FL.GetFilm(name, year);
+			FL.GetFilm(name, year);
 			system("pause");
 			system("cls");
 			break;
@@ -351,7 +358,6 @@ void main()
 			cout << "Enter producer:";
 			cin >> prod;
 			FL.GetFilmProd(prod);
-			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
