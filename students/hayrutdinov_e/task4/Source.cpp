@@ -43,11 +43,7 @@ ostream &operator<<(ostream &os, const Film &film)
 }
 class FilmLibrary
 {
-public:
-	friend ostream &operator<<(ostream &os, const Film &film);
-	vector<Film> films;
-	vector <Film> g;
-	vector <Film> fees;
+private:
 	vector <Film> SortLib()
 	{
 		Film tmp;
@@ -70,10 +66,31 @@ public:
 					}
 		return films;
 	}
-	Film GetFilm(Film _film)
+	vector <Film> SortFees()
 	{
-		return _film;
+		vector <Film> fees;
+		int tmp;
+		for (int j = 0; j < films.size(); j++)
+		{
+			fees[j] = films[j];
+		}
+		for (int i = 0; i < films.size() - 1; i++)
+			for (int j = 0; j < films.size() - i - 1; j++)
+			{
+				if (fees[j].cash > fees[j + 1].cash)
+				{
+					tmp = fees[j].cash;
+					fees[j].cash = fees[j + 1].cash;
+					fees[j + 1].cash = tmp;
+				}
+			}
+		return fees;
 	}
+public:
+	friend ostream &operator<<(ostream &os, const Film &film);
+	vector<Film> films;
+	vector <Film> g;
+	vector <Film> fees;
 	//1 Method
 	void AddFilm(string _comp, string _prod, string _name, string _scen, int _cash, int _day, int _month, int _year)
 	{
@@ -87,6 +104,7 @@ public:
 		f.month = _month;
 		f.year = _year;
 		films.push_back(f);
+		SortLib();
 	}
 	//2 Method
 	void ChangeInfo(int tmp, string _name, int _year, char *_info)
@@ -118,14 +136,13 @@ public:
 		}
 	}
 	//3 Method
-	vector <Film> GetFilm(string _name, int _year)
+	Film GetFilm(string _name, int _year)
 	{
 		for (int j = 0; j < films.size(); j++)
 		{
 			if ((films[j].name == _name) && (films[j].year = _year))
-				g.push_back(films[j]);
+				return films[j];
 		}
-		return g;
 	}
 	//4 Method
 	vector <Film> GetFilmProd(string _prod)
@@ -140,39 +157,19 @@ public:
 	//5 Method
 	vector <Film> GetFilmYear(int _year)
 	{
-		vector <Film> g;
 		for (int j = 0; j < films.size(); j++)
 			if (films[j].year == _year)
 				g.push_back(films[j]);
 		return g;
 	}
-	vector <Film> SortFees()
-	{
-		vector <Film> fees;
-		int tmp;
-		for (int j = 0; j < films.size(); j++)
-		{
-			fees[j] = films[j];
-		}
-		for (int i = 0; i < films.size() - 1; i++)
-			for (int j = 0; j < films.size() - i - 1; j++)
-			{
-				if (fees[j].cash > fees[j + 1].cash)
-				{
-					tmp = fees[j].cash;
-					fees[j].cash = fees[j + 1].cash;
-					fees[j + 1].cash = tmp;
-				}
-			}
-		return fees;
-	}
 	//6 Method
 	vector <Film> GetFilmsWithMaxFees(int count)
 	{
-		fees = SortFees();
-		while (fees.size() != count)
-			fees.pop_back();
-		return fees;
+		for (int i = 0; i < count; i++)
+		{
+			fees.push_back(SortFees()[i]);
+			return fees;
+		}
 	}
 	// 7 Method
 	vector <Film> GetFilmsWithMaxFeesInYear(int count, int _year)
@@ -181,8 +178,6 @@ public:
 		for (int i = 0; i < fees.size(); i++)
 			if (fees[i].year = _year)
 				g[i] = fees[i];
-		while (g.size() != count)
-			g.pop_back();
 		return g;
 	}
 	//8 Method
@@ -314,7 +309,6 @@ void main()
 			cin >> fees;
 			cout << endl;
 			FL.AddFilm(comp, prod, name, scen, fees, day, month, year);
-			FL.SortLib();
 			FL.PrintVector();
 			count++;
 			system("pause");
@@ -338,7 +332,6 @@ void main()
 			cout << "Enter the fact that you are changing:";
 			cin >> r;
 			FL.ChangeInfo(tmp, name, year, *b);
-			FL.SortLib();
 			FL.PrintVector();
 			system("pause");
 			system("cls");
@@ -348,9 +341,7 @@ void main()
 		{
 			cout << "Enter name film and year:";
 			cin >> name >> year;
-			_films = FL.GetFilm(name, year);
-			for (int i = 0; i < _films.size(); i++)
-				cout << _films[i];
+			cout << FL.GetFilm(name, year);
 			system("pause");
 			system("cls");
 			break;
@@ -370,7 +361,7 @@ void main()
 		{
 			cout << "Enter year:";
 			cin >> year;
-			_films=FL.GetFilmYear(year);
+			_films = FL.GetFilmYear(year);
 			for (int i = 0; i < _films.size(); i++)
 				cout << _films[i];
 			FL.PrintVector();
@@ -392,7 +383,7 @@ void main()
 		{
 			cout << "Enter count films and her year:";
 			cin >> count >> year;
-			_films=FL.GetFilmsWithMaxFeesInYear(count, year);
+			_films = FL.GetFilmsWithMaxFeesInYear(count, year);
 			for (int i = 0; i < _films.size(); i++)
 				cout << _films[i];
 			FL.PrintVector();
