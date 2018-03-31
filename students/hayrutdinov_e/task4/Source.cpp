@@ -266,6 +266,7 @@ public:
 void main()
 {
 	FilmLibrary FL;
+	vector<Film> _films;
 	int tmp, count = 0;
 	int t = 1;
 	int r;
@@ -314,7 +315,6 @@ void main()
 			cout << endl;
 			FL.AddFilm(comp, prod, name, scen, fees, day, month, year);
 			FL.SortLib();
-			system("cls");
 			FL.PrintVector();
 			count++;
 			system("pause");
@@ -348,7 +348,9 @@ void main()
 		{
 			cout << "Enter name film and year:";
 			cin >> name >> year;
-			FL.GetFilm(name, year);
+			_films = FL.GetFilm(name, year);
+			for (int i = 0; i < _films.size(); i++)
+				cout << _films[i];
 			system("pause");
 			system("cls");
 			break;
@@ -357,7 +359,9 @@ void main()
 		{
 			cout << "Enter producer:";
 			cin >> prod;
-			FL.GetFilmProd(prod);
+			_films = FL.GetFilmProd(prod);;
+			for (int i = 0; i < _films.size(); i++)
+				cout << _films[i];
 			system("pause");
 			system("cls");
 			break;
@@ -366,7 +370,9 @@ void main()
 		{
 			cout << "Enter year:";
 			cin >> year;
-			FL.GetFilmYear(year);
+			_films=FL.GetFilmYear(year);
+			for (int i = 0; i < _films.size(); i++)
+				cout << _films[i];
 			FL.PrintVector();
 			system("pause");
 			system("cls");
@@ -386,7 +392,9 @@ void main()
 		{
 			cout << "Enter count films and her year:";
 			cin >> count >> year;
-			FL.GetFilmsWithMaxFeesInYear(count, year);
+			_films=FL.GetFilmsWithMaxFeesInYear(count, year);
+			for (int i = 0; i < _films.size(); i++)
+				cout << _films[i];
 			FL.PrintVector();
 			system("pause");
 			system("cls");
