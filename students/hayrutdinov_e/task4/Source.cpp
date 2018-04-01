@@ -111,22 +111,38 @@ public:
 			{
 				switch (tmp)
 				{
-				case 1:
-					films[i].day = atoi(_info);
-				case 2:
-					films[i].month = atoi(_info);
-				case 3:
-					films[i].year = atoi(_info);
-				case 4:
-					films[i].name = _info;
-				case 5:
-					films[i].prod = _info;
-				case 6:
-					films[i].scen = _info;
-				case 7:
-					films[i].comp = _info;
-				case 8:
-					films[i].cash = atoi(_info);
+					case 1:
+					{
+						films[i].day = atoi(_info);
+					}
+					case 2:
+					{
+						films[i].month = atoi(_info); 
+					}
+					case 3:
+					{
+						films[i].year = atoi(_info);
+					}
+					case 4:
+					{	
+						films[i].name = _info;
+					}
+					case 5:
+					{
+						films[i].prod = _info;
+					}
+					case 6:
+					{
+						films[i].scen = _info;
+					}
+					case 7:
+					{
+						films[i].comp = _info;
+					}
+					case 8:
+					{
+						films[i].cash = atoi(_info);
+					}
 				}
 			}
 		}
@@ -287,145 +303,145 @@ void main()
 		cin >> r;
 		switch (r)
 		{
-		case 1:
-		{
-			system("chcp 1251");
-			cout << "Name:";
-			getline(cin, name, '.');
-			cout << "Day:";
-			cin >> day;
-			cout << "Month:";
-			cin >> month;
-			cout << "Year:";
-			cin >> year;
-			cout << "Producer:";
-			getline(cin, prod, '.');
-			cout << "Screenwriter:";
-			getline(cin, scen, '.');
-			cout << "Composer:";
-			getline(cin, comp, '.');
-			cout << "Box office:";
-			cin >> fees;
-			cout << endl;
-			FL.AddFilm(comp, prod, name, scen, fees, day, month, year);
-			FL.PrintLib();
-			count++;
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 2:
-		{
-			cout << "Enter name film and year:";
-			cin >> name >> year;
-			cout << "Enter fact that want:"
-				<< "1 - Day\n"
-				<< "2 - Month\n"
-				<< "3 - Year\n"
-				<< "4 - Name\n"
-				<< "5 - Producer\n"
-				<< "6 - Screenwriter\n"
-				<< "7 - Composer\n"
-				<< "8 - Fees" << endl;
-			cin >> tmp;
-			cout << "Enter the fact that you are changing:";
-			cin >> r;
-			FL.ChangeInfo(tmp, name, year, *b);
-			FL.PrintLib();
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 3:
-		{
-			cout << "Enter name film and year:";
-			cin >> name >> year;
-			cout << FL.GetFilm(name, year);
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 4:
-		{
-			cout << "Enter producer:";
-			cin >> prod;
-			_films = FL.GetFilmProd(prod);;
-			for (int i = 0; i < _films.size(); i++)
-				cout << _films[i];
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 5:
-		{
-			cout << "Enter year:";
-			cin >> year;
-			_films = FL.GetFilmYear(year);
-			for (int i = 0; i < _films.size(); i++)
-				cout << _films[i];
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 6:
-		{
-			cout << "Enter count films:";
-			cin >> count;
-			_films = FL.GetFilmsWithMaxFees(count);
-			for (int i = 0; i < _films.size(); i++)
-				cout << _films[i];
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 7:
-		{
-			cout << "Enter count films and her year:";
-			cin >> count >> year;
-			_films = FL.GetFilmsWithMaxFeesInYear(count, year);
-			for (int i = 0; i < _films.size(); i++)
-				cout << _films[i];
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 8:
-		{
-			cout << "Count films:" << FL.CountFilms() << endl;;
-			FL.PrintLib();
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 9:
-		{
-			cout << "Enter name and year film that you want remove:";
-			cin >> name >> year;
-			FL.DeleteFilm(year, name);
-			FL.PrintLib();
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 10:
-		{
-			FL.SaveInFile();
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 11:
-		{
-			FL.CheckFile(count);
-			FL.PrintLib();
-			system("pause");
-			system("cls");
-			break;
-		}
-		case 12:
-		{
-			t = 0;
-		}
+			case 1:
+			{
+				system("chcp 1251");
+				cout << "Name:";
+				getline(cin, name, '.');
+				cout << "Day:";
+				cin >> day;
+				cout << "Month:";
+				cin >> month;
+				cout << "Year:";
+				cin >> year;
+				cout << "Producer:";
+				getline(cin, prod, '.');
+				cout << "Screenwriter:";
+				getline(cin, scen, '.');
+				cout << "Composer:";
+				getline(cin, comp, '.');
+				cout << "Box office:";
+				cin >> fees;
+				cout << endl;
+				FL.AddFilm(comp, prod, name, scen, fees, day, month, year);
+				FL.PrintLib();
+				count++;
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 2:
+			{
+				cout << "Enter name film and year:";
+				cin >> name >> year;
+				cout << "Enter fact that want:"
+					<< "1 - Day\n"
+					<< "2 - Month\n"
+					<< "3 - Year\n"
+					<< "4 - Name\n"
+					<< "5 - Producer\n"
+					<< "6 - Screenwriter\n"
+					<< "7 - Composer\n"
+					<< "8 - Fees" << endl;
+				cin >> tmp;
+				cout << "Enter the fact that you are changing:";
+				cin >> r;
+				FL.ChangeInfo(tmp, name, year, *b);
+				FL.PrintLib();
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 3:
+			{
+				cout << "Enter name film and year:";
+				cin >> name >> year;
+				cout << FL.GetFilm(name, year);
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 4:
+			{
+				cout << "Enter producer:";
+				cin >> prod;
+				_films = FL.GetFilmProd(prod);;
+				for (int i = 0; i < _films.size(); i++)
+					cout << _films[i];
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 5:
+			{
+				cout << "Enter year:";
+				cin >> year;
+				_films = FL.GetFilmYear(year);
+				for (int i = 0; i < _films.size(); i++)
+					cout << _films[i];
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 6:
+			{
+				cout << "Enter count films:";
+				cin >> count;
+				_films = FL.GetFilmsWithMaxFees(count);
+				for (int i = 0; i < _films.size(); i++)
+					cout << _films[i];
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 7:
+			{
+				cout << "Enter count films and her year:";
+				cin >> count >> year;
+				_films = FL.GetFilmsWithMaxFeesInYear(count, year);
+				for (int i = 0; i < _films.size(); i++)
+					cout << _films[i];
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 8:
+			{
+				cout << "Count films:" << FL.CountFilms() << endl;;
+				FL.PrintLib();
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 9:
+			{
+				cout << "Enter name and year film that you want remove:";
+				cin >> name >> year;
+				FL.DeleteFilm(year, name);
+				FL.PrintLib();
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 10:
+			{
+				FL.SaveInFile();
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 11:
+			{
+				FL.CheckFile(count);
+				FL.PrintLib();
+				system("pause");
+				system("cls");
+				break;
+			}
+			case 12:
+			{
+				t = 0;
+			}
 		}
 	}
 }
