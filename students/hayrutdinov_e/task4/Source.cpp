@@ -68,20 +68,18 @@ private:
 	}
 	vector <Film> SortFees()
 	{
+		Film tmp;
 		vector <Film> fees;
-		int tmp;
-		for (int j = 0; j < films.size(); j++)
-		{
-			fees[j] = films[j];
-		}
-		for (int i = 0; i < films.size() - 1; i++)
-			for (int j = 0; j < films.size() - i - 1; j++)
+		for (int i = 0; i < films.size(); i++)
+			fees.push_back(films[i]);
+		for (int i = 0; i < fees.size() - 1; i++)
+			for (int j = 0; j < fees.size() - 1; j++)
 			{
-				if (fees[j].cash > fees[j + 1].cash)
+				if (fees[j].cash < fees[j + 1].cash)
 				{
-					tmp = fees[j].cash;
-					fees[j].cash = fees[j + 1].cash;
-					fees[j + 1].cash = tmp;
+					tmp = fees[j];
+					fees[j] = fees[j + 1];
+					fees[j + 1] = tmp;
 				}
 			}
 		return fees;
@@ -89,8 +87,6 @@ private:
 public:
 	friend ostream &operator<<(ostream &os, const Film &film);
 	vector<Film> films;
-	vector <Film> g;
-	vector <Film> fees;
 	//1 Method
 	void AddFilm(string _comp, string _prod, string _name, string _scen, int _cash, int _day, int _month, int _year)
 	{
@@ -147,6 +143,7 @@ public:
 	//4 Method
 	vector <Film> GetFilmProd(string _prod)
 	{
+		vector <Film> g;
 		for (int j = 0; j < films.size(); j++)
 		{
 			if (films[j].prod == _prod)
@@ -157,6 +154,7 @@ public:
 	//5 Method
 	vector <Film> GetFilmYear(int _year)
 	{
+		vector <Film> g;
 		for (int j = 0; j < films.size(); j++)
 			if (films[j].year == _year)
 				g.push_back(films[j]);
@@ -165,20 +163,22 @@ public:
 	//6 Method
 	vector <Film> GetFilmsWithMaxFees(int count)
 	{
+		vector <Film> fees;
 		for (int i = 0; i < count; i++)
-		{
 			fees.push_back(SortFees()[i]);
-			return fees;
-		}
+		return fees;
 	}
 	// 7 Method
 	vector <Film> GetFilmsWithMaxFeesInYear(int count, int _year)
 	{
-		fees = SortFees();
-		for (int i = 0; i < fees.size(); i++)
-			if (fees[i].year = _year)
-				g[i] = fees[i];
-		return g;
+		vector <Film> fees;
+		vector <Film> tmp;
+		for (int i = 0; i < SortFees().size(); i++)
+			if (SortFees()[i].year == _year)
+				fees.push_back(SortFees()[i]);
+		for (int i = 0; i < count; i++)
+				tmp.push_back(fees[i]);
+		return tmp;
 	}
 	//8 Method
 	int CountFilms()
@@ -248,9 +248,8 @@ public:
 			f.cash = atoi(t);
 			films.push_back(f);
 		}
-
 	}
-	void PrintVector()
+	void PrintLib()
 	{
 		for (int i = 0; i < films.size(); i++)
 		{
@@ -309,7 +308,7 @@ void main()
 			cin >> fees;
 			cout << endl;
 			FL.AddFilm(comp, prod, name, scen, fees, day, month, year);
-			FL.PrintVector();
+			FL.PrintLib();
 			count++;
 			system("pause");
 			system("cls");
@@ -332,7 +331,7 @@ void main()
 			cout << "Enter the fact that you are changing:";
 			cin >> r;
 			FL.ChangeInfo(tmp, name, year, *b);
-			FL.PrintVector();
+			FL.PrintLib();
 			system("pause");
 			system("cls");
 			break;
@@ -364,7 +363,6 @@ void main()
 			_films = FL.GetFilmYear(year);
 			for (int i = 0; i < _films.size(); i++)
 				cout << _films[i];
-			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
@@ -373,8 +371,9 @@ void main()
 		{
 			cout << "Enter count films:";
 			cin >> count;
-			FL.GetFilmsWithMaxFees(count);
-			FL.PrintVector();
+			_films = FL.GetFilmsWithMaxFees(count);
+			for (int i = 0; i < _films.size(); i++)
+				cout << _films[i];
 			system("pause");
 			system("cls");
 			break;
@@ -386,7 +385,6 @@ void main()
 			_films = FL.GetFilmsWithMaxFeesInYear(count, year);
 			for (int i = 0; i < _films.size(); i++)
 				cout << _films[i];
-			FL.PrintVector();
 			system("pause");
 			system("cls");
 			break;
@@ -394,7 +392,7 @@ void main()
 		case 8:
 		{
 			cout << "Count films:" << FL.CountFilms() << endl;;
-			FL.PrintVector();
+			FL.PrintLib();
 			system("pause");
 			system("cls");
 			break;
@@ -404,7 +402,7 @@ void main()
 			cout << "Enter name and year film that you want remove:";
 			cin >> name >> year;
 			FL.DeleteFilm(year, name);
-			FL.PrintVector();
+			FL.PrintLib();
 			system("pause");
 			system("cls");
 			break;
@@ -419,7 +417,7 @@ void main()
 		case 11:
 		{
 			FL.CheckFile(count);
-			FL.PrintVector();
+			FL.PrintLib();
 			system("pause");
 			system("cls");
 			break;
