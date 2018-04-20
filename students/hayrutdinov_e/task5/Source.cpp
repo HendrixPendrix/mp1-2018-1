@@ -13,6 +13,7 @@ struct Goods
 	int barcode;
 	int price;
 	int sale;
+	int saleinrub = price*sale;
 	int count = 1;
 	Goods &operator=(const Goods &c)
 	{
@@ -28,11 +29,10 @@ ostream &operator<<(ostream &os, const Goods &ch)
 {
 	os << "Barcode:" << ch.barcode << endl;
 	os << "Name:" << ch.name << endl;
-	os << "price" << ch.price << endl;
+	os << "Price" << ch.price << endl;
 	os << "Sale" << ch.sale << endl;
 	return os;
 }
-
 struct Voucher : public Goods
 {
 	vector<Goods> goods;
@@ -47,7 +47,7 @@ struct Voucher : public Goods
 	void GetTotalSale()
 	{
 		for (int i = 0; i < goods.size(); i++)
-			totsale += goods[i].sale;
+			totsale += goods[i].saleinrub;
 	}
 	int GetTotal()
 	{
@@ -66,7 +66,6 @@ ostream &operator<<(ostream &os, const Voucher &ch)
 	os << "Sale all goods:" << ch.totsale << endl;
 	os << "TOTAL:" << ch.total;
 }
-
 class Storage
 {
 protected:
@@ -86,6 +85,7 @@ class Till :public Storage
 {
 private:
 	Voucher v;
+	Goods g;
 public:
 	//1 Method
 	bool GetGoods(int code)
@@ -94,7 +94,7 @@ public:
 		{
 			if (code == inv[i].barcode)
 			{
-				v.goods.push_back(inv[i]);
+				g = inv[i];
 				return 1;
 			}
 			return 0;
@@ -113,7 +113,10 @@ public:
 				return inv[i];
 	}
 	//3 Method
-
+	void SetDescription()
+	{
+		v.goods.push_back(g);
+	}
 	//4 Method
 	Voucher SetVoucher()
 	{
@@ -146,9 +149,9 @@ void main()
 	{
 		cout << "Select action:\n"
 			<< "1 - Set Goods in storage\n"
-			<< "2 -Set Barcode\n"
+			<< "2 - Set Barcode\n"
 			<< "3 - Get Description\n"
-			<< "4 - \n"
+			<< "4 - Set Description\n"
 			<< "5 - To form a check\n"
 			<< "6 - To calculate the final cost\n"
 			<< "7 - To remove the selected goods\n"
@@ -156,10 +159,27 @@ void main()
 		cin >> r;
 		switch (r)
 		{
-			case 1:
+		case 1:
+		{
+			cout << "Enter barcode" << endl;
+			cin >> code;
+			cout << "Enter name" << endl;
+			getline(cin, name);
+			cout << "Enter price" << endl;
+			cin >> price;
+			cout << "Enter sale:" << endl;
+			cin >> sale;
+			storage.SetGoods(code, name, price, sale);
+		}
+		case 2:
+		{
+			system("chcp 1251");
+			cout << "Enter barcode:" << endl;
+			cin >> code;
+			till.GetGoods(code);
+			if (till.GetGoods(code) == 0)
 			{
-				cout << "Enter barcode" << endl;
-				cin	>> code;
+				cout << "This product is not in stock.Add it to the database:" << endl;
 				cout << "Enter name" << endl;
 				getline(cin, name);
 				cout << "Enter price" << endl;
@@ -168,62 +188,45 @@ void main()
 				cin >> sale;
 				storage.SetGoods(code, name, price, sale);
 			}
-			case 2:
-			{
-				system("chcp 1251");
-				cout << "Enter barcode:" << endl;
-				cin >> code;
-				till.GetGoods(code);
-				if (till.GetGoods(code) == 0)
-				{
-					cout << "This product is not in stock.Add it to the database:" << endl;
-					cout << "Enter name" << endl;
-					getline(cin, name);
-					cout << "Enter price" << endl;
-					cin >> price;
-					cout << "Enter sale:" << endl;
-					cin >> sale;
-					storage.SetGoods(code, name, price, sale);
-				}
-				system("pause");
-				system("cls");
-				break;
-			}
-			case 3:
-			{
-				cout << "Enter barcode:" << endl;
-				cin >> code;
-				cout << till.GetDescription(code) << endl;
-				system("pause");
-				system("cls");
-				break;
-			}
-			case 5:
-			{
-				cout << till.SetVoucher() << endl;
-				system("pause");
-				system("cls");
-				break;
-			}
-				case 6:
-			{
-				cout << till.GetTotal() << endl;
-				system("pause");
-				system("cls");
-				break;
-			}
-			case 7:
-			{
-				cout << "Enter barcode:" << endl;
-				cin >> code;
-				till.DeleteGoods(code);
-				system("pause");
-				system("cls");
-				break;
-			}
-			case 0:
-			{
-				b = 1;
-			}
+			system("pause");
+			system("cls");
+			break;
+		}
+		case 3:
+		{
+			cout << "Enter barcode:" << endl;
+			cin >> code;
+			cout << till.GetDescription(code) << endl;
+			system("pause");
+			system("cls");
+			break;
+		}
+		case 5:
+		{
+			cout << till.SetVoucher() << endl;
+			system("pause");
+			system("cls");
+			break;
+		}
+		case 6:
+		{
+			cout << till.GetTotal() << endl;
+			system("pause");
+			system("cls");
+			break;
+		}
+		case 7:
+		{
+			cout << "Enter barcode:" << endl;
+			cin >> code;
+			till.DeleteGoods(code);
+			system("pause");
+			system("cls");
+			break;
+		}
+		case 0:
+		{
+			b = 1;
+		}
 		}
 	}
