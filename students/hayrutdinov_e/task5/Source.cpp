@@ -96,23 +96,22 @@ class Till : public Storage
 {
 private:
 	Voucher v;
-	Goods g;
+	vector <Goods> g;
 public:
 	//1 Method
-	bool GetGoods(int code)
+	void GetGoods(int code)
 	{
-		if (code == g.barcode)
-		{
-			g.count++;
-		}
+		for (int i = 0; i < g.size(); i++)
+			if (code == g[i].barcode)
+			{
+				g[i].count++;
+			}
 		for (int i = 0; i < inv.size(); i++)
 		{
 			if (code == inv[i].barcode)
 			{
-				g = inv[i];
-				return 1;
+				g.push_back(inv[i]);
 			}
-			return 0;
 		}
 	}
 	//2 Method
@@ -125,7 +124,8 @@ public:
 	//3 Method
 	void SetDescription()
 	{
-		v.goods.push_back(g);
+		for (int i = 0; i < g.size(); i++)
+			v.goods.push_back(g[i]);
 	}
 	//4 Method
 	Voucher SetVoucher()
@@ -191,10 +191,7 @@ void main()
 			system("chcp 1251");
 			cout << "Enter barcode:" << endl;
 			cin >> code;
-			if (till.GetGoods(code) == 0)
-			{
-				cout << "This product is not in stock." << endl;
-			}
+			till.GetGoods(code);
 			system("pause");
 			system("cls");
 			break;
