@@ -5,15 +5,13 @@
 #include<locale.h> 
 #include <string> 
 #include <vector> 
-#include <iomanip>
 using namespace std;
 struct Goods
 {
 	string name;
 	int barcode;
 	int price;
-	int sale;
-	int saleinrub = price*sale;
+	double sale;
 	int count = 1;
 	Goods &operator=(const Goods &c)
 	{
@@ -21,6 +19,7 @@ struct Goods
 		this->price = c.price;
 		this->barcode = c.barcode;
 		this->sale = c.sale;
+		this->count = c.count;
 		return *this;
 	}
 	friend ostream &operator<<(ostream &os, const Goods &ch);
@@ -33,25 +32,34 @@ ostream &operator<<(ostream &os, const Goods &ch)
 	os << "Sale" << ch.sale << endl;
 	return os;
 }
-struct Voucher : public Goods
+struct Voucher
 {
 	vector<Goods> goods;
-	int value; // price za ves tovar
-	int total; // summa k oplate
-	int totsale; //general skidka
-	void GetValue()
+	int value = 0; // price za ves tovar
+	float total = 0; // summa k oplate
+	float totsale = 0; //general skidka
+	Voucher &operator=(const Voucher &c)
+	{
+		this->value = c.value;
+		this->total = c.total;
+		this->totsale = c.totsale;;
+		return *this;
+	}
+	int GetValue()
 	{
 		for (int i = 0; i < goods.size(); i++)
-			value += goods[i].price*goods[i].count;
+			value += (goods[i].price*goods[i].count);
+		return value;
 	}
-	void GetTotalSale()
+	float GetTotalSale()
 	{
 		for (int i = 0; i < goods.size(); i++)
-			totsale += goods[i].saleinrub;
+			totsale += (goods[i].price  * (goods[i].sale / 100))*goods[i].count;
+		return totsale;
 	}
-	int GetTotal()
+	float GetTotal()
 	{
-		total = value*totsale;
+		total = GetValue() - GetTotalSale();
 		return total;
 	}
 };
@@ -60,17 +68,20 @@ ostream &operator<<(ostream &os, const Voucher &ch)
 	os << "Voucher" << endl;
 	for (int i = 0; i < ch.goods.size(); i++)
 	{
-		os << setfill('.') << setw(10) << left << ch.goods[i].name << ch.goods[i].price << 'x' << ch.goods[i].count << endl;
-		os << "Value:" << setfill('.') << setw(12) << ch.value << endl;
+		os << "Name: " << ch.goods[i].name << endl;
+		os << "Price: " << ch.goods[i].price << endl;
+		os << "Count: " << ch.goods[i].count << endl;
+		os << "Sale: " << ch.goods[i].sale << "%" << endl;
 	}
+	os << "Value:" << ch.value << endl;
 	os << "Sale all goods:" << ch.totsale << endl;
 	os << "TOTAL:" << ch.total;
+	return os;
 }
 class Storage
 {
-protected:
-	vector <Goods> inv;
 public:
+	vector <Goods> inv;
 	void SetGoods(int _code, string _name, int _price, int _sale)
 	{
 		Goods tmp;
@@ -81,7 +92,7 @@ public:
 		inv.push_back(tmp);
 	}
 };
-class Till :public Storage
+class Till : public Storage
 {
 private:
 	Voucher v;
@@ -90,6 +101,10 @@ public:
 	//1 Method
 	bool GetGoods(int code)
 	{
+		if (code == g.barcode)
+		{
+			g.count++;
+		}
 		for (int i = 0; i < inv.size(); i++)
 		{
 			if (code == inv[i].barcode)
@@ -99,11 +114,6 @@ public:
 			}
 			return 0;
 		}
-		for (int i = 0; i < v.goods.size(); i++)
-			if (code == v.goods[i].barcode)
-			{
-				v.goods[i].count++;
-			}
 	}
 	//2 Method
 	Goods GetDescription(int _code)
@@ -123,8 +133,10 @@ public:
 		return v;
 	}
 	//5 Method
-	int GetTotal()
+	double GetTotal()
 	{
+		v.GetValue();
+		v.GetTotalSale();
 		return v.GetTotal();
 	}
 	//6 Method
@@ -143,7 +155,6 @@ void main()
 	string name;
 	int price, sale;
 	Till till;
-	Storage storage;
 	setlocale(LC_ALL, "rus");
 	while (b == 0)
 	{
@@ -164,29 +175,25 @@ void main()
 			cout << "Enter barcode" << endl;
 			cin >> code;
 			cout << "Enter name" << endl;
+			cin.ignore();
 			getline(cin, name);
 			cout << "Enter price" << endl;
 			cin >> price;
 			cout << "Enter sale:" << endl;
 			cin >> sale;
-			storage.SetGoods(code, name, price, sale);
+			till.SetGoods(code, name, price, sale);
+			system("pause");
+			system("cls");
+			break;
 		}
 		case 2:
 		{
 			system("chcp 1251");
 			cout << "Enter barcode:" << endl;
 			cin >> code;
-			till.GetGoods(code);
 			if (till.GetGoods(code) == 0)
 			{
-				cout << "This product is not in stock.Add it to the database:" << endl;
-				cout << "Enter name" << endl;
-				getline(cin, name);
-				cout << "Enter price" << endl;
-				cin >> price;
-				cout << "Enter sale:" << endl;
-				cin >> sale;
-				storage.SetGoods(code, name, price, sale);
+				cout << "This product is not in stock." << endl;
 			}
 			system("pause");
 			system("cls");
@@ -197,6 +204,13 @@ void main()
 			cout << "Enter barcode:" << endl;
 			cin >> code;
 			cout << till.GetDescription(code) << endl;
+			system("pause");
+			system("cls");
+			break;
+		}
+		case 4:
+		{
+			till.SetDescription();
 			system("pause");
 			system("cls");
 			break;
@@ -230,3 +244,4 @@ void main()
 		}
 		}
 	}
+}
