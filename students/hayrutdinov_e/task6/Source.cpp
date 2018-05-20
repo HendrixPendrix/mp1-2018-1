@@ -39,35 +39,29 @@ public:
 	{
 		n = _n;
 	}
-	bool GetNumber(int _player)
+	bool GetNumber(string _player)
 	{
-		int tmp = _player;
-		int count = 0;
-		while (tmp != 0)
+		if (n == _player.size())
 		{
-			count++;
-			tmp / 10;
-		}
-		if (count == n)
-		{
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < _player.size(); i++)
 			{
-				int y;
-				y = _player % 10;
-				player.push_back(y);
-				_player = _player / 10;
+				char tmp[2];
+				tmp[0] = _player[i];
+				tmp[1] = '\0';
+				_player.push_back(atoi(tmp));
 			}
 			return true;
 		}
-		else return false;
+		else
+			return false;
 	}
 	int CheckCows()
 	{
-		for (int i = 0; i < n - 1; i++)
+		for (int i = 0; i < n; i++)
 		{
-			for (int j = i + 1; j < n; j++)
+			for (int j = i; j < n; j++)
 			{
-				if (comp[i] == player[j])
+				if ((comp[i] == player[j]) && (i != j))
 					cows++;
 			}
 		}
@@ -82,9 +76,15 @@ public:
 		}
 		return bulls;
 	}
-	int Steps(int _steps)
+	void Steps(int _steps)
 	{
 		steps = _steps;
+	}
+	void ClearCowsBulls()
+	{
+		cows = 0;
+		bulls = 0;
+		player.clear();
 	}
 	void SaveRecords()
 	{
@@ -109,7 +109,7 @@ void main()
 {
 	Game game;
 	int n, b = 0, a, steps;
-	int num;
+	string num;
 	setlocale(LC_ALL, "rus");
 	system("chcp 1251");
 	cout << "Приветствую тебя в игре Быки и Коровы" << endl;
@@ -124,6 +124,7 @@ void main()
 		switch (a)
 		{
 		case 1:
+		{
 			steps = 0;
 			cout << "Введите длину числа:" << endl;;
 			cin >> n;
@@ -138,26 +139,30 @@ void main()
 				cout << "Неправильный ввод. Повторите попытку" << endl;
 				goto m1;
 			}
-			else
-				if (game.GetNumber(num) == 1)
+			if (game.GetNumber(num) == 1)
+			{
+				steps++;
+				cout << "Быков:" << game.CheckBulls() << endl;
+				cout << "Коров:" << game.CheckCows() << endl;
+				if (game.CheckBulls() == n)
 				{
-					steps++;
-					cout << "Быков:" << game.CheckBulls() << endl;
-					cout << "Коров:" << game.CheckCows() << endl;
-					if (game.CheckBulls() == n)
-					{
-						cout << "Поздравляю, Игрок, ты выиграл!" << endl;
-						cout << "Твой счет:" << steps;
-						cout << "Лучший счет:" << game.ShowBest();
-						system("pause");
-						system("cls");
-						break;
-					}
-					else goto m1;
+					cout << "Поздравляю, Игрок, ты выиграл!" << endl;
+					cout << "Твой счет:" << steps;
+					cout << "Лучший счет:" << game.ShowBest();
+					system("pause");
+					system("cls");
+					break;
 				}
+				else
+				{
+					game.ClearCowsBulls();
+					goto m1;
+				}
+			}
+		}
 		case 2:
 		{
-			cout << game.ShowBest() << endl;
+			cout << "Лучший результат:" << game.ShowBest() << endl;
 			system("pause");
 			system("cls");
 			break;
@@ -176,13 +181,14 @@ void main()
 			cout << "Пусть задумано тайное число «3219»." << endl;
 			cout << "Игрок ввел число «2310»." << endl;
 			cout << "Результат: две «коровы»(две цифры : «2» и «3» — угаданы на неверных позициях) и один «бык»(одна цифра «1» угадана вплоть до позиции)." << endl;
+			system("pause");
+			system("cls");
+			break;
 		}
 		case 4:
 		{
 			b = 1;
 		}
 		}
-
-		system("pause");
 	}
 }
