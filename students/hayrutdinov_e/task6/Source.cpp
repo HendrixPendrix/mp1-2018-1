@@ -7,24 +7,17 @@
 #include <vector>
 #include <time.h>
 using namespace std;
-
-class Game
+class Computer
 {
-	int n;
-	int cows;
-	int bulls;
-	int Record;
-	int steps;
-	vector <int> player;
+protected:
 	vector <int> comp;
+	int n;
 public:
-	Game()
+	Computer()
 	{
 		n = 0;
-		cows = 0;
-		bulls = 0;
 	}
-	vector<int> RandomNumber(int n)
+	void RandomNumber(int n)
 	{
 		vector<int> a(10);
 		srand(time(NULL));
@@ -33,7 +26,23 @@ public:
 		random_shuffle(a.begin(), a.end());
 		for (int i = 0; i <= n; i++)
 			comp.push_back(a[i]);
+	}
+	vector<int> GetRandNumber()
+	{
 		return comp;
+	}
+};
+class Game :public Computer
+{
+	int cows;
+	int bulls;
+	int steps;
+	vector <int> player;
+public:
+	Game()
+	{
+		cows = 0;
+		bulls = 0;
 	}
 	void SetSize(int _n)
 	{
@@ -48,18 +57,18 @@ public:
 				char tmp[2];
 				tmp[0] = _player[i];
 				tmp[1] = '\0';
-				_player.push_back(atoi(tmp));
+				player.push_back(atoi(tmp));
 			}
 			return true;
 		}
 		else
 			return false;
 	}
-	int CheckCows()
+	int CountCows()
 	{
 		for (int i = 0; i < n; i++)
 		{
-			for (int j = i; j < n; j++)
+			for (int j = 0; j < n; j++)
 			{
 				if ((comp[i] == player[j]) && (i != j))
 					cows++;
@@ -67,7 +76,7 @@ public:
 		}
 		return cows;
 	}
-	int CheckBulls()
+	int CountBulls()
 	{
 		for (int i = 0; i < n; i++)
 		{
@@ -75,6 +84,12 @@ public:
 				bulls++;
 		}
 		return bulls;
+	}
+	bool WinOrLose()
+	{
+		if (bulls == n)
+			return true;
+		return false;
 	}
 	void Steps(int _steps)
 	{
@@ -86,25 +101,32 @@ public:
 		bulls = 0;
 		player.clear();
 	}
-	void SaveRecords()
+	void SaveRecords(int _steps)
 	{
-		ofstream rec("Records.txt");
-		if (steps < ShowBest())
+		int tmp;
+		ifstream read("Records.txt");
+		read >> tmp;
+		read.close();
+		ofstream rec;
+		if (_steps < tmp)
 		{
 			rec.open("Records.txt", ios_base::trunc);
-			rec << steps;
+			rec << _steps;
 		}
 		rec.close();
 	}
 	int ShowBest()
 	{
-		ifstream rec("Records.txt");
-		rec >> Record;
+		int Record;
+		char t[300];
+		ifstream rec;
+		rec.open("Records.txt");
+		rec.getline(t, 300, '\n');
+		Record = atoi(t);
 		rec.close();
 		return Record;
 	}
 };
-
 void main()
 {
 	Game game;
@@ -129,10 +151,11 @@ void main()
 			cout << "Введите длину числа:" << endl;;
 			cin >> n;
 			game.SetSize(n);
+			game.RandomNumber(n);
 		m1:	cout << "Введите число:" << endl;;
 			cin >> num;
 			for (int i = 0; i < n; i++)
-				cout << game.RandomNumber(n)[i];
+				cout << game.GetRandNumber()[i];
 			cout << endl;
 			if (game.GetNumber(num) == 0)
 			{
@@ -142,19 +165,20 @@ void main()
 			if (game.GetNumber(num) == 1)
 			{
 				steps++;
-				cout << "Быков:" << game.CheckBulls() << endl;
-				cout << "Коров:" << game.CheckCows() << endl;
-				if (game.CheckBulls() == n)
+				cout << "Быков:" << game.CountBulls() << endl;
+				cout << "Коров:" << game.CountCows() << endl;
+				if (game.WinOrLose() == true)
 				{
 					cout << "Поздравляю, Игрок, ты выиграл!" << endl;
-					cout << "Твой счет:" << steps;
-					cout << "Лучший счет:" << game.ShowBest();
+					cout << "Твой счет:" << steps << endl;
+					game.SaveRecords(steps);
 					system("pause");
 					system("cls");
 					break;
 				}
-				else
+				if (game.WinOrLose() == false)
 				{
+					cout << "У всех бывают неудачи. Попробуй еще раз!. Я в тебя верю!!" << endl;
 					game.ClearCowsBulls();
 					goto m1;
 				}
